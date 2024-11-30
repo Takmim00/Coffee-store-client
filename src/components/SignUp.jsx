@@ -45,10 +45,11 @@ const SignUp = () => {
 
   return (
     <div>
-      <div className=" flex justify-center items-center ">
+      <div className="  flex justify-center items-center ">
         <div className="card bg-base-100 w-full max-w-lg shrink-0 rounded-none p-10 border-2">
           <h2 className="text-2xl font-semibold text-center">Sign Up now</h2>
-          <form onSubmit={handleSignUp} className="card-body">
+          <form on
+          Submit={handleSignUp} className="card-body">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Your Name</span>
