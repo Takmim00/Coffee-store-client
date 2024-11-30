@@ -1,22 +1,53 @@
-import React from 'react';
+import React, { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
-import { useState } from "react";
-import { Link } from 'react-router-dom';
 import { FaGoogle } from "react-icons/fa6";
-
-
+import { Link } from "react-router-dom";
+import { AuthContext } from "../providers/AuthProvider";
 
 const SignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
 
-    return (
-        <div>
-            <div className=" flex justify-center items-center ">
+  const { signInUser } = useContext(AuthContext);
+
+  const handleSignIn = (e) => {
+    e.preventDefault();
+
+    const form = e.target;
+    const email = form.email.value;
+    const password = form.password.value;
+    console.log(email, password);
+    signInUser(email, password)
+      .then((result) => {
+        console.log(result.user);
+        //update last login time
+        const lastSignInTime = result?.user?.metadata?.lastSignInTime;
+
+        const loginInfo = { email, lastSignInTime };
+
+        fetch(`https://coffee-store-server-one-lilac.vercel.app/users`, {
+          method: "PATCH",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(loginInfo),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            console.log("sign in info updated in db", data);
+          });
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  return (
+    <div>
+      <div className=" flex justify-center items-center ">
         <div className="card bg-base-100 w-full max-w-lg shrink-0 rounded-none p-10 border-2">
           <h2 className="text-2xl font-semibold text-center">
             Login your account
           </h2>
-          <form className="card-body">
+          <form onSubmit={handleSignIn} className="card-body">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">Email</span>
@@ -49,7 +80,6 @@ const SignIn = () => {
               <label className="label">
                 <Link
                   to="/forgetPassword"
-                 
                   className="label-text-alt link link-hover"
                 >
                   Forgot password?
@@ -61,24 +91,21 @@ const SignIn = () => {
             </div>
           </form>
           <div className=" items-center flex justify-center mb-4">
-            <button
-              
-              className="btn text-xl  rounded-lg w-[80%]"
-            >
+            <button className="btn text-xl  rounded-lg w-[80%]">
               <FaGoogle />
               Google
             </button>
           </div>
           <p className="text-center font-semibold">
-            Don’t Have An Account ?{" "}
-            <Link to="/register" className="text-red-500">
-              Register
+            New to coffee drinker :
+            <Link to="/signup" className="text-red-500">
+              Sign Up
             </Link>
           </p>
         </div>
       </div>
-        </div>
-    );
+    </div>
+  );
 };
 
 export default SignIn;

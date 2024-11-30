@@ -16,12 +16,20 @@ const UpdateCoffee = () => {
     const details = form.details.value;
     const photo = form.photo.value;
 
-    const updatedCoffee = { name, chef, supplier, taste, category, details, photo };
+    const updatedCoffee = {
+      name,
+      chef,
+      supplier,
+      taste,
+      category,
+      details,
+      photo,
+    };
 
     console.log(updatedCoffee);
 
     //send data to the server
-    fetch(`http://localhost:5000/coffee/${_id}`, {
+    fetch(`https://coffee-store-server-one-lilac.vercel.app/coffee/${_id}`, {
       method: "PUT",
       headers: {
         "content-type": "application/json",
@@ -41,7 +49,7 @@ const UpdateCoffee = () => {
         }
       });
   };
-  
+
   return (
     <div>
       <div className="min-h-screen flex items-center justify-center bg-gray-100">

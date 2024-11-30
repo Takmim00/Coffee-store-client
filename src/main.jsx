@@ -7,8 +7,9 @@ import Layout from "./components/Layout";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import UpdateCoffee from "./components/UpdateCoffee";
+import Users from "./components/Users";
 import "./index.css";
-import AuthProvider, { AuthContext } from "./providers/AuthProvider";
+import AuthProvider from "./providers/AuthProvider";
 
 const router = createBrowserRouter([
   {
@@ -18,7 +19,8 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <App></App>,
-        loader: () => fetch("http://localhost:5000/coffee"),
+        loader: () =>
+          fetch("https://coffee-store-server-one-lilac.vercel.app/coffee"),
       },
       {
         path: "/addCoffee",
@@ -28,7 +30,9 @@ const router = createBrowserRouter([
         path: "/updateCoffee/:id",
         element: <UpdateCoffee></UpdateCoffee>,
         loader: ({ params }) =>
-          fetch(`http://localhost:5000/coffee/${params.id}`),
+          fetch(
+            `https://coffee-store-server-one-lilac.vercel.app/coffee/${params.id}`
+          ),
       },
       {
         path: "signin",
@@ -38,6 +42,12 @@ const router = createBrowserRouter([
         path: "signup",
         element: <SignUp></SignUp>,
       },
+      {
+        path: "/users",
+        element: <Users></Users>,
+        loader: () =>
+          fetch("https://coffee-store-server-one-lilac.vercel.app/users"),
+      },
     ],
   },
 ]);
@@ -45,9 +55,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <AuthProvider>
-
       <RouterProvider router={router} />
     </AuthProvider>
-
   </StrictMode>
 );
